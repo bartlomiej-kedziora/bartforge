@@ -1,0 +1,19 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: bartforge-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+networks:
+  bartforge-network:
+    driver: bridge
+# docker exec -it bartforge-ollama ollama pull qwen2.5-coder:7b
+# docker exec -it bartforge-ollama ollama pull qwen2.5:3b
