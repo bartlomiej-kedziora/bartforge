@@ -6,5 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class OllamaProperties(
     val baseUrl: String,
     val model: String,
-    val timeoutSeconds: Long = 120
+    val timeoutSeconds: Long = 30
 )
