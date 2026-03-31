@@ -3,6 +3,7 @@ package pl.eked.bartforge.agent.api.config
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.eked.bartforge.agent.core.port.LlmClient
+import pl.eked.bartforge.agent.core.service.AgentLoopService
 import pl.eked.bartforge.agent.core.service.AgentService
 import pl.eked.bartforge.agent.core.service.FileAnalysisService
 import pl.eked.bartforge.agent.core.service.LlmClientRegistry
@@ -48,5 +49,14 @@ class CoreConfig {
         readFileTool: ReadFileTool
     ): FileAnalysisService {
         return FileAnalysisService(llmClientRegistry, readFileTool)
+    }
+
+    @Bean
+    fun agentLoopService(
+        llmClientRegistry: LlmClientRegistry,
+        toolRegistry: pl.eked.bartforge.agent.core.agent.ToolRegistry,
+        agentDecisionParser: pl.eked.bartforge.agent.core.agent.AgentDecisionParser
+    ): AgentLoopService {
+        return AgentLoopService(llmClientRegistry, toolRegistry, agentDecisionParser)
     }
 }
