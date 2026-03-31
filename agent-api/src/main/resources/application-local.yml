@@ -1,11 +1,11 @@
 server:
-  port: 8888
+  port: 8080
 
 bartforge:
   llm:
     ollama:
       base-url: http://localhost:11434
-      model: qwen2.5-coder:7b
+      model: tinyllama
       timeout-seconds: 30
     openai:
       base-url: https://api.openai.com/v1
