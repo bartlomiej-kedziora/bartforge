@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import pl.eked.pl.eked.bartforge.agent.core.model.AgentRequest
-import pl.eked.pl.eked.bartforge.agent.core.model.LlmProvider
-import pl.eked.pl.eked.bartforge.agent.core.service.AgentService
+import pl.eked.bartforge.agent.core.model.AgentRequest
+import pl.eked.bartforge.agent.core.model.LlmProvider
+import pl.eked.bartforge.agent.core.service.AgentService
 
 @RestController
 @RequestMapping("/api/agent")

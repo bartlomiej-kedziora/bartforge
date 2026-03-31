@@ -1,7 +1,7 @@
-package pl.eked.pl.eked.bartforge.agent.core.service
+package pl.eked.bartforge.agent.core.service
 
-import pl.eked.pl.eked.bartforge.agent.core.model.LlmProvider
-import pl.eked.pl.eked.bartforge.agent.core.port.LlmClient
+import pl.eked.bartforge.agent.core.model.LlmProvider
+import pl.eked.bartforge.agent.core.port.LlmClient
 
 class LlmClientRegistry(
     clients: List<LlmClient>,

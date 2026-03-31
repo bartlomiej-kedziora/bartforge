@@ -1,7 +1,7 @@
-package pl.eked.pl.eked.bartforge.agent.core.service
+package pl.eked.bartforge.agent.core.service
 
-import pl.eked.pl.eked.bartforge.agent.core.model.AgentRequest
-import pl.eked.pl.eked.bartforge.agent.core.model.AgentResponse
+import pl.eked.bartforge.agent.core.model.AgentRequest
+import pl.eked.bartforge.agent.core.model.AgentResponse
 
 class AgentService(
     private val llmClientRegistry: LlmClientRegistry
