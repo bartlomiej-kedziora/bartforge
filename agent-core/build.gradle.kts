@@ -3,5 +3,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":agent-tools"))
+    implementation(kotlin("stdlib"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
