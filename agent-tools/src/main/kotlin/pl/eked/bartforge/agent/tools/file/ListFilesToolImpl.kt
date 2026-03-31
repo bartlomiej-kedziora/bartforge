@@ -1,6 +1,7 @@
 package pl.eked.bartforge.agent.tools.file
 
 import org.springframework.stereotype.Component
+import pl.eked.bartforge.agent.core.AgentConstants
 import pl.eked.bartforge.agent.core.tool.ListFilesTool
 import pl.eked.bartforge.agent.core.tool.ListFilesToolRequest
 import pl.eked.bartforge.agent.core.tool.ToolResult
@@ -16,7 +17,8 @@ class ListFilesToolImpl : ListFilesTool {
     override fun name(): String = "list_files"
 
     override fun execute(request: ListFilesToolRequest): ToolResult {
-        val root = Paths.get(request.rootPath).normalize()
+        val rootPath = request.rootPath.ifBlank { AgentConstants.DEFAULT_WORKSPACE }
+        val root = Paths.get(rootPath).normalize()
 
         validateRoot(root)
 

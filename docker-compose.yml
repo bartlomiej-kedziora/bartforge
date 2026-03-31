@@ -7,13 +7,77 @@ services:
     volumes:
       - ollama_data:/root/.ollama
     environment:
-      OLLAMA_HOST: 0.0.0.0:11434
+      - OLLAMA_HOST=0.0.0.0:11434
+    networks:
+      - bartforge-network
+    restart: unless-stopped
+
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: bartforge-ollama-init
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODELS=${OLLAMA_MODELS:-qwen2.5-coder:7b,phi3,tinyllama}
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        echo "Waiting for Ollama to be ready..."
+        until ollama list >/dev/null 2>&1; do
+          sleep 2
+        done
+
+        echo "Models to pull: $${OLLAMA_MODELS}"
+        OLD_IFS="$$IFS"
+        IFS=','
+        for model in $${OLLAMA_MODELS}; do
+          trimmed_model="$$(echo "$$model" | xargs)"
+          if [ -z "$$trimmed_model" ]; then
+            continue
+          fi
+
+          if ollama list | awk 'NR>1 {print $$1}' | grep -Fx "$$trimmed_model" >/dev/null 2>&1; then
+            echo "Model already present: $$trimmed_model"
+          else
+            echo "Pulling model: $$trimmed_model"
+            ollama pull "$$trimmed_model"
+          fi
+        done
+        IFS="$$OLD_IFS"
+
+        echo "All configured Ollama models are ready."
+    networks:
+      - bartforge-network
+    restart: "no"
+
+  bartforge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bartforge-app
+    ports:
+      - "8888:8080"
+    volumes:
+      - type: bind
+        source: ${REPO_LOCAL_WORKSPACE:-.}
+        target: /workspace
+        read_only: true
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - BARTFORGE_LLM_OLLAMA_MODEL=tinyllama
+    depends_on:
+      - ollama
+      - ollama-init
+    networks:
+      - bartforge-network
     restart: unless-stopped
 
 volumes:
   ollama_data:
+
 networks:
   bartforge-network:
     driver: bridge
-# docker exec -it bartforge-ollama ollama pull qwen2.5-coder:7b
-# docker exec -it bartforge-ollama ollama pull qwen2.5:3b
